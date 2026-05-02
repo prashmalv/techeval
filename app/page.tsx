@@ -11,7 +11,7 @@ export default function LandingPage() {
       <nav className="border-b border-white/10 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image src="/rlai-logo.png" alt="RLAI" width={72} height={37} className="object-contain" />
+            <Image src="/rlai-logo.png" alt="RLAI" width={72} height={37} className="object-contain" unoptimized />
             <span className="font-semibold text-lg tracking-tight text-white">TechEval</span>
           </div>
           <div className="flex items-center gap-3">

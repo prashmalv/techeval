@@ -61,7 +61,7 @@ function LoginForm() {
       <div className="w-full max-w-md animate-fade-in">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 text-white">
-            <Image src="/rlai-logo.png" alt="RLAI" width={72} height={37} className="object-contain" />
+            <Image src="/rlai-logo.png" alt="RLAI" width={72} height={37} className="object-contain" unoptimized />
             <span className="font-semibold text-lg text-white">TechEval</span>
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-white">Welcome back</h1>

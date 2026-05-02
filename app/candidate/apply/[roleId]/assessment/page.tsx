@@ -117,10 +117,17 @@ function AssessmentContent() {
     if (!appId || !appData) return;
     setSaving(true);
     try {
-      const answersPayload = Object.values(answers).filter(a => a.content?.trim()).map(a => ({
-        ...a,
-        timeTakenSeconds: timers[a.questionId] || 0,
-      }));
+      const answersPayload = allQuestions
+        .filter(q => answers[q.id]?.content?.trim())
+        .map(q => ({
+          questionId: q.id,
+          questionType: q.type,
+          questionTitle: q.title,
+          content: answers[q.id].content,
+          language: answers[q.id]?.language || q.language || null,
+          diagramUrl: answers[q.id]?.diagramUrl || null,
+          timeTakenSeconds: timers[q.id] || 0,
+        }));
 
       await fetch(`/api/applications/${appId}`, {
         method: "PATCH",
@@ -159,9 +166,14 @@ function AssessmentContent() {
     if (!appId || !appData) return;
     setSubmitting(true);
     try {
-      const answersPayload = Object.values(answers).map(a => ({
-        ...a,
-        timeTakenSeconds: timers[a.questionId] || 0,
+      const answersPayload = allQuestions.map(q => ({
+        questionId: q.id,
+        questionType: q.type,
+        questionTitle: q.title,
+        content: answers[q.id]?.content || "",
+        language: answers[q.id]?.language || q.language || null,
+        diagramUrl: answers[q.id]?.diagramUrl || null,
+        timeTakenSeconds: timers[q.id] || 0,
       }));
 
       const res = await fetch(`/api/applications/${appId}`, {

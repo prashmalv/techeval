@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside className="w-60 flex-col bg-slate-900 fixed h-full z-30 hidden md:flex">
         <div className="px-5 py-5 border-b border-white/10">
           <Link href="/" className="flex items-center gap-2.5">
-            <Image src="/rlai-logo.png" alt="RLAI" width={64} height={33} className="object-contain" />
+            <Image src="/rlai-logo.png" alt="RLAI" width={64} height={33} className="object-contain" unoptimized />
             <div>
               <div className="text-sm font-bold text-white leading-none">TechEval</div>
               <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">

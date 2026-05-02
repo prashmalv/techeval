@@ -32,7 +32,7 @@ export default function CandidateLayout({ children }: { children: React.ReactNod
       <aside className="hidden md:flex w-60 flex-col bg-white border-r border-slate-200 fixed h-full z-30">
         <div className="px-5 py-5 border-b border-slate-100">
           <Link href="/" className="flex items-center gap-2.5">
-            <Image src="/rlai-logo.png" alt="RLAI" width={64} height={33} className="object-contain" />
+            <Image src="/rlai-logo.png" alt="RLAI" width={64} height={33} className="object-contain" unoptimized />
             <div>
               <div className="text-sm font-bold text-white leading-none">TechEval</div>
               <div className="text-xs text-slate-400 mt-0.5">Candidate Portal</div>
@@ -78,7 +78,7 @@ export default function CandidateLayout({ children }: { children: React.ReactNod
       {/* Mobile header */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/rlai-logo.png" alt="RLAI" width={56} height={29} className="object-contain" />
+          <Image src="/rlai-logo.png" alt="RLAI" width={56} height={29} className="object-contain" unoptimized />
           <span className="font-bold text-white">TechEval</span>
         </Link>
         <button onClick={() => setMenuOpen(!menuOpen)} className="flex items-center gap-1.5 text-sm text-slate-600">
