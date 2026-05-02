@@ -124,8 +124,8 @@ function AssessmentContent() {
           questionType: q.type,
           questionTitle: q.title,
           content: answers[q.id].content,
-          language: answers[q.id]?.language || q.language || null,
-          diagramUrl: answers[q.id]?.diagramUrl || null,
+          language: answers[q.id]?.language || q.language || undefined,
+          diagramUrl: answers[q.id]?.diagramUrl || undefined,
           timeTakenSeconds: timers[q.id] || 0,
         }));
 
@@ -171,8 +171,8 @@ function AssessmentContent() {
         questionType: q.type,
         questionTitle: q.title,
         content: answers[q.id]?.content || "",
-        language: answers[q.id]?.language || q.language || null,
-        diagramUrl: answers[q.id]?.diagramUrl || null,
+        language: answers[q.id]?.language || q.language || undefined,
+        diagramUrl: answers[q.id]?.diagramUrl || undefined,
         timeTakenSeconds: timers[q.id] || 0,
       }));
 
