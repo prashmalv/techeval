@@ -1,0 +1,146 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CANDIDATE
+  ADMIN
+}
+
+enum JobRole {
+  AI_INTERN
+  AI_ENGINEER
+  DATA_SCIENTIST
+  AI_ARCHITECT
+  MLOPS_ENGINEER
+  CLOUD_ARCHITECT
+  SENIOR_TECH_LEAD
+  TECH_PROGRAM_MANAGER
+}
+
+enum ExperienceLevel {
+  INTERN       // 0–1 yr
+  JUNIOR       // 1–3 yr
+  MID          // 3–5 yr
+  SENIOR       // 5–8 yr
+  STAFF        // 8+ yr
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  EVALUATING
+  EVALUATED
+  SHORTLISTED
+  REJECTED
+}
+
+enum QuestionType {
+  CODING
+  SYSTEM_DESIGN
+  CASE_STUDY
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String
+  password     String
+  phone        String?
+  role         UserRole      @default(CANDIDATE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  applications Application[]
+
+  @@index([email])
+}
+
+model Application {
+  id                String            @id @default(cuid())
+  userId            String
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobRole           JobRole
+  experienceLevel   ExperienceLevel
+  yearsExperience   Float
+  currentCompany    String?
+  currentTitle      String?
+  linkedinUrl       String?
+  portfolioUrl      String?
+  professionalSummary String?         @db.Text
+  resumeUrl         String?
+  resumeFileName    String?
+  status            ApplicationStatus @default(DRAFT)
+  answers           Answer[]
+  evaluation        Evaluation?
+  assignedQuestions Json?
+  submittedAt       DateTime?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@unique([userId, jobRole])
+  @@index([status])
+  @@index([jobRole])
+  @@index([createdAt])
+}
+
+model Answer {
+  id              String      @id @default(cuid())
+  applicationId   String
+  application     Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  questionId      String
+  questionType    QuestionType
+  questionTitle   String
+  content         String      @db.Text
+  language        String?
+  diagramUrl      String?
+  timeTakenSeconds Int?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@unique([applicationId, questionId])
+  @@index([applicationId])
+}
+
+model Evaluation {
+  id                   String      @id @default(cuid())
+  applicationId        String      @unique
+  application          Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  overallScore         Float
+  technicalScore       Float
+  practicalScore       Float
+  communicationScore   Float
+  systemThinkingScore  Float
+
+  aiUsageLikelihood    Float
+  aiUsageAnalysis      String      @db.Text
+  redFlags             String[]
+  crossQuestionNotes   String?     @db.Text
+
+  questionEvaluations  Json
+  recommendation       String
+  keyStrengths         String[]
+  keyConcerns          String[]
+  suggestedCrossQuestions String[]
+
+  summary              String      @db.Text
+  evaluatedAt          DateTime    @default(now())
+  evaluatedBy          String      @default("claude-3-5-sonnet")
+
+  @@index([applicationId])
+}
+
+model AdminNotification {
+  id              String   @id @default(cuid())
+  applicationId   String
+  hrEmail         String
+  sentAt          DateTime @default(now())
+  emailSubject    String
+  emailBody       String   @db.Text
+}
