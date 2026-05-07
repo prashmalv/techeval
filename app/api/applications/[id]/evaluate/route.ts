@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
@@ -6,7 +6,7 @@ import { evaluateApplication } from "@/lib/evaluator";
 import { JobRole, ExperienceLevel } from "@/types";
 
 export async function POST(
-  req: NextRequest,
+  _req: Request,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -96,6 +96,10 @@ export async function POST(
       data: { status: "SUBMITTED" },
     }).catch(() => {});
 
-    return NextResponse.json({ error: "Evaluation failed." }, { status: 500 });
+    const message = err instanceof Error && err.message.includes("credit balance")
+      ? "Anthropic API credit balance is too low. Please top up at console.anthropic.com → Plans & Billing, then update ANTHROPIC_API_KEY in the Container App."
+      : "Evaluation failed. Check server logs for details.";
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
